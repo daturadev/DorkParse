@@ -1,24 +1,36 @@
 #!/usr/bin python3
 # utf-8
-
-import random
-import time
-# import json
-from os import system, name, getcwd
-
-import proxyscrape
-import requests
-from colorama import Fore
-
-# Imports
-from config import private_proxy
-
+try:
+    import random
+    import time
+    import pyuser_agent
+    # import json
+    from os import system, name, getcwd
+    import proxyscrape
+    import requests
+    from colorama import Fore
+except:
+    print('''
+    [!] Error: Module(s) not found.
+    [!] Please install the required modules via pip.
+    [!] pip install -r requirements.txt
+    ''')
+    pass
+    time.sleep(2.7)
+    exit(1)
 # Proxyscrape INIT
 collector = proxyscrape.create_collector('collector-1', 'socks4')
 
 # Global variables
 urls = []
 root = getcwd() + "/"
+
+
+# UAs
+UA = pyuser_agent.UA()
+browsers = UA.list
+browser = random.choice(browsers)
+UA.browser = browser
 
 
 # Clear Screen
@@ -59,17 +71,9 @@ Example: lib/dorks.txt
 file = root + path
 cls()
 
-# UAs
-user_agents = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/115.0",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/116.0"
-]
 
+
+# Parse Dorks
 with open(file, 'r') as dork_file:
     for dork in dork_file:
         # Rotate proxies
